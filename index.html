@@ -16,7 +16,7 @@ canvas {
 }
 body{
 
-overflow:hidden;
+overflow:hidden; //burada kaydırma olmamasını ayarlıyorum
 background-color:rgba(32,41,70);
 background-image: url('arkaplanresmi2.jpg') ;
 align-items: center;
@@ -61,7 +61,7 @@ left:1500px;">Oyunun amaci duvara çarpmadan<br> bitis noktasina ulasmaktir.</p>
         harita1();
     }
     
-    var myGameArea = {
+    var myGameArea = {  //burada canvası oluşturuyorum
         canvas : document.createElement("canvas"),
         start : function() {
             this.canvas.width = 1440;
@@ -72,7 +72,7 @@ left:1500px;">Oyunun amaci duvara çarpmadan<br> bitis noktasina ulasmaktir.</p>
             
             document.body.insertBefore(this.canvas, document.body.childNodes[0]);
             
-            this.interval = setInterval(updateGameArea, 20);
+            this.interval = setInterval(updateGameArea, 20); //saniyenin binde 20 si zamanda tekrar çağrılmasını söylüyorum
             
             window.addEventListener('keydown', function (e) {
                 myGameArea.keys = (myGameArea.keys || []);
@@ -94,9 +94,9 @@ left:1500px;">Oyunun amaci duvara çarpmadan<br> bitis noktasina ulasmaktir.</p>
             this.context.moveTo(250,100);
             this.context.lineTo(300,750);
     
-            this.context.moveTo(300,750);
+            this.context.moveTo(300,750);       //burada oyunu kazanırsak ekrana WİN yazıyorum
             this.context.lineTo(400,350);
-    
+        
             this.context.moveTo(400,350);
             this.context.lineTo(500,750);
     
@@ -121,28 +121,28 @@ left:1500px;">Oyunun amaci duvara çarpmadan<br> bitis noktasina ulasmaktir.</p>
             this.context.stroke();
             
         },  
-        clear : function() {
+        clear : function() { //burada canvası temizliyorum
             this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
         },
-        stop : function() {
+        stop : function() {//burada yenilemeyi durduruyorum
             clearInterval(this.interval);
         },
         restart:function(){
             if(check){
             kutu.x=35;
-            kutu.y=738;}
+            kutu.y=738;}//burada eğer check true getirdiyse oyuncu 1. haritadadır ve 1. haritanın kordinatlarına göre başlangıç pozisyonunu belirliyorum
             else{
-                kutu.x=31;
+                kutu.x=31;//burada 2. harita
                 kutu.y=55;
             }
             kutu.update();
-            this.interval = setInterval(updateGameArea, 20);
+            this.interval = setInterval(updateGameArea, 20); //tekrar döngüyü çalıştırıyorum
         }
     }
     
     function component(width, height, color, x, y) {
         this.width = width;
-        this.height = height;
+        this.height = height;//burada duvarları oluşturuyorum
         this.speedX = 0;
         this.speedY = 0;
         this.x = x;
@@ -155,12 +155,12 @@ left:1500px;">Oyunun amaci duvara çarpmadan<br> bitis noktasina ulasmaktir.</p>
             ctx.fillRect(this.x, this.y, this.width, this.height);
         }
         this.newPos = function() {
-            this.x += this.speedX;
+            this.x += this.speedX;//yeni pozisyonu belirliyorum.
             this.y += this.speedY;        
         }    
         this.crashWith = function(duvar) {
             var myleft = this.x;
-            var myright = this.x + (this.width);
+            var myright = this.x + (this.width);//burada kutunun kenarlarının pozisyonları sayesinde oyundaki kutunun duvarlara carpıp çarpmadığını belirliyorum.
             var mytop = this.y;
             var mybottom = this.y + (this.height);
             var otherleft = duvar.x;
@@ -178,10 +178,10 @@ left:1500px;">Oyunun amaci duvara çarpmadan<br> bitis noktasina ulasmaktir.</p>
     function updateGameArea() {
         if (kutu.crashWith(duvar1)||kutu.crashWith(duvar2)||kutu.crashWith(duvar3)||kutu.crashWith(duvar4)||kutu.crashWith(duvar5)||kutu.crashWith(duvar6)||kutu.crashWith(duvar7)||kutu.crashWith(duvar8)||kutu.crashWith(duvar9)||kutu.crashWith(duvar10)||kutu.crashWith(duvar11)||kutu.crashWith(duvar12)||kutu.crashWith(duvar13)||kutu.crashWith(duvar14)||kutu.crashWith(duvar15)||kutu.crashWith(duvar16)||kutu.crashWith(duvar17)||kutu.crashWith(duvar18)||kutu.crashWith(duvar19)||kutu.crashWith(duvar20)) {
             efekt.play();
-            myGameArea.stop();
+            myGameArea.stop();  //burada kutu duvara çarparsa efekt çalıyor ve oyun başa dönüyor
             myGameArea.restart();
         }
-        else if(kutu.crashWith(bitiscizgisi)){
+        else if(kutu.crashWith(bitiscizgisi)){ // kutu bitiş çizigisine gelirse harita 2 ye geçiyor
             harita2();
         }
         
@@ -189,7 +189,7 @@ left:1500px;">Oyunun amaci duvara çarpmadan<br> bitis noktasina ulasmaktir.</p>
     myGameArea.clear();
     clearmove();
         if (myGameArea.keys && myGameArea.keys[37]) {kutu.speedX = -3; }
-        if (myGameArea.keys && myGameArea.keys[39]) {kutu.speedX = 3; }
+        if (myGameArea.keys && myGameArea.keys[39]) {kutu.speedX = 3; } //yön tuşlarını algılıyor ve hareket ediyor
         if (myGameArea.keys && myGameArea.keys[38]) {kutu.speedY = -3; }
         if (myGameArea.keys && myGameArea.keys[40]) {kutu.speedY = 3; }
         baslangic.update();
@@ -205,7 +205,7 @@ left:1500px;">Oyunun amaci duvara çarpmadan<br> bitis noktasina ulasmaktir.</p>
         duvar9.update();
         duvar10.update();
         duvar11.update();
-        duvar12.update();
+        duvar12.update(); // her döngüde duvarları tekrar çizdiriyor
         duvar13.update();
         duvar14.update();
         duvar15.update();
@@ -217,13 +217,13 @@ left:1500px;">Oyunun amaci duvara çarpmadan<br> bitis noktasina ulasmaktir.</p>
         bitis.update();
         bitiscizgisi.update();
         if(wincheck){
-            bitiscizgisi2.update();
+            bitiscizgisi2.update();//ilk haritayı geçersek bitiş çizgisi 2. haritadaki yerine güncelleniyor.
         }
         
         kutu.newPos();    
         kutu.update();
         if(kutu.crashWith(bitiscizgisi2)){
-            myGameArea.stop();
+            myGameArea.stop(); //eğer oyun biterse ekrana win yazıyor
             myGameArea.win();
         }
         }
@@ -233,7 +233,7 @@ left:1500px;">Oyunun amaci duvara çarpmadan<br> bitis noktasina ulasmaktir.</p>
    
     function clearmove(){
         kutu.speedX=0;
-        kutu.speedY=0;
+        kutu.speedY=0;//hızı 0'lıyor
     }
     
     function harita1(){
@@ -245,7 +245,7 @@ left:1500px;">Oyunun amaci duvara çarpmadan<br> bitis noktasina ulasmaktir.</p>
         duvar4 = new component(360,30,"blue",330,555);
         duvar5 = new component(792,30,"blue",0,780);
         duvar6 = new component(30,420,"blue",792,435);    
-        duvar7 = new component(396,75,"blue",420,435);
+        duvar7 = new component(396,75,"blue",420,435);//haritayı çiziyor.
         duvar8 = new component(38,435,"blue",382,75);
         duvar9 = new component(741,30,"blue",330,0);
         duvar10 = new component(630,30,"blue",390,75);
@@ -263,7 +263,7 @@ left:1500px;">Oyunun amaci duvara çarpmadan<br> bitis noktasina ulasmaktir.</p>
         bitiscizgisi2=new component(1,36,"black",1150,54);
         bitis=new component(50,45,"black",1390,359);
         bitiscizgisi=new component(1,45,"black",1425,359);
-        efekt = new sound("efekt.mp3");
+        efekt = new sound("efekt.mp3");//ses efekti tanımlandı.
         myGameArea.start();
         
     }
@@ -272,7 +272,7 @@ left:1500px;">Oyunun amaci duvara çarpmadan<br> bitis noktasina ulasmaktir.</p>
         this.sound = document.createElement("audio");
         this.sound.src = src;
         this.sound.setAttribute("preload", "auto");
-        this.sound.setAttribute("controls", "none");
+        this.sound.setAttribute("controls", "none");//ses efekti
         this.sound.style.display = "none";
         document.body.appendChild(this.sound);
         this.play = function(){
@@ -291,7 +291,7 @@ left:1500px;">Oyunun amaci duvara çarpmadan<br> bitis noktasina ulasmaktir.</p>
         duvar1.y=30;
     
         duvar2.width=450;
-        duvar2.height=24;
+        duvar2.height=24;//harita 2 güncellenerek oluşturuluyor.
         duvar2.x=0;
         duvar2.y=90;
         
