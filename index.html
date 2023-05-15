@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<style>
+canvas {
+    border:20px solid #d3d3d3;
+    background-color: #838383;
+    border-radius:5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+body{
+
+overflow:hidden;
+background-color:rgba(32,41,70);
+background-image: url('arkaplanresmi2.jpg') ;
+align-items: center;
+}
+font{
+    position: relative;
+    top:-870px;
+    left:1500px
+   
+}
+p{
+    position:relative;
+    top:-890px;
+    left:1500px;
+  
+}
+</style>
+</head>
+<body onload="startGame()">
+
+
+
+
+  
+<font  style="font-size:60px" ><b>Labirent oyunu</b></font>
+<p style="font-size: 30px;background-color: #202946;">Oyunu oynamak için yön tuşlarini <br>kullanabilirsiniz.Duvarlara çarparsa<br> yanarsin ve başa dönmek zorunda<br> kalirsin.</p>
+<img src="çarpma.jpg" style=" position: relative;top:-900px;left:1530px" width="350" height="180">
+
+<img src="başa dön.jpg" style=" position: relative;top:-700px;left:1176px" width="350" height="180">
+
+<p style="font-size: 30px;background-color: #202946;position:relative;
+top:-720px;
+left:1500px;">Oyunun amaci duvara çarpmadan<br> bitis noktasina ulasmaktir.</p>
+<img src="amaç.jpg" style=" position: relative;top:-730px;left:1530px" width="350" height="200">
+</body>
+<script>
+    var check;
+    var wincheck;
+    var myGamePiece;
+    var efekt;
+    function startGame() {
+        harita1();
+    }
+    
+    var myGameArea = {
+        canvas : document.createElement("canvas"),
+        start : function() {
+            this.canvas.width = 1440;
+            this.canvas.height = 810;
+            this.canvas
+            this.sayac=0;
+            this.context = this.canvas.getContext("2d");
+            
+            document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+            
+            this.interval = setInterval(updateGameArea, 20);
+            
+            window.addEventListener('keydown', function (e) {
+                myGameArea.keys = (myGameArea.keys || []);
+                myGameArea.keys[e.keyCode] = (e.type == "keydown");
+            })
+            
+            window.addEventListener('keyup', function (e) {
+                myGameArea.keys[e.keyCode] = (e.type == "keydown");            
+            })
+    
+    
+    
+    
+        
+        },
+        win:function(){
+            myGameArea.clear();
+           
+            this.context.moveTo(250,100);
+            this.context.lineTo(300,750);
+    
+            this.context.moveTo(300,750);
+            this.context.lineTo(400,350);
+    
+            this.context.moveTo(400,350);
+            this.context.lineTo(500,750);
+    
+            this.context.moveTo(500,750);
+            this.context.lineTo(600,100);
+    
+            this.context.moveTo(700,20);
+            this.context.lineTo(700,60);
+    
+            this.context.moveTo(700,100);
+            this.context.lineTo(700,750);
+    
+            this.context.moveTo(800,100);
+            this.context.lineTo(800,750);
+    
+    
+            this.context.moveTo(800,100);
+            this.context.lineTo(1200,750);
+    
+            this.context.moveTo(1200,100);
+            this.context.lineTo(1200,750);
+            this.context.stroke();
+            
+        },  
+        clear : function() {
+            this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        },
+        stop : function() {
+            clearInterval(this.interval);
+        },
+        restart:function(){
+            if(check){
+            kutu.x=35;
+            kutu.y=738;}
+            else{
+                kutu.x=31;
+                kutu.y=55;
+            }
+            kutu.update();
+            this.interval = setInterval(updateGameArea, 20);
+        }
+    }
+    
+    function component(width, height, color, x, y) {
+        this.width = width;
+        this.height = height;
+        this.speedX = 0;
+        this.speedY = 0;
+        this.x = x;
+        
+        this.y = y;    
+        this.update = function() {
+            ctx = myGameArea.context;
+            
+            ctx.fillStyle = color;
+            ctx.fillRect(this.x, this.y, this.width, this.height);
+        }
+        this.newPos = function() {
+            this.x += this.speedX;
+            this.y += this.speedY;        
+        }    
+        this.crashWith = function(duvar) {
+            var myleft = this.x;
+            var myright = this.x + (this.width);
+            var mytop = this.y;
+            var mybottom = this.y + (this.height);
+            var otherleft = duvar.x;
+            var otherright = duvar.x + (duvar.width);
+            var othertop = duvar.y;
+            var otherbottom = duvar.y + (duvar.height);
+            var crash = true;
+            if ((mybottom < othertop) || (mytop > otherbottom) || (myright < otherleft) || (myleft > otherright)) {
+                crash = false;
+            }
+            return crash;
+        }
+    }
+    
+    function updateGameArea() {
+        if (kutu.crashWith(duvar1)||kutu.crashWith(duvar2)||kutu.crashWith(duvar3)||kutu.crashWith(duvar4)||kutu.crashWith(duvar5)||kutu.crashWith(duvar6)||kutu.crashWith(duvar7)||kutu.crashWith(duvar8)||kutu.crashWith(duvar9)||kutu.crashWith(duvar10)||kutu.crashWith(duvar11)||kutu.crashWith(duvar12)||kutu.crashWith(duvar13)||kutu.crashWith(duvar14)||kutu.crashWith(duvar15)||kutu.crashWith(duvar16)||kutu.crashWith(duvar17)||kutu.crashWith(duvar18)||kutu.crashWith(duvar19)||kutu.crashWith(duvar20)) {
+            efekt.play();
+            myGameArea.stop();
+            myGameArea.restart();
+        }
+        else if(kutu.crashWith(bitiscizgisi)){
+            harita2();
+        }
+        
+        else{
+    myGameArea.clear();
+    clearmove();
+        if (myGameArea.keys && myGameArea.keys[37]) {kutu.speedX = -3; }
+        if (myGameArea.keys && myGameArea.keys[39]) {kutu.speedX = 3; }
+        if (myGameArea.keys && myGameArea.keys[38]) {kutu.speedY = -3; }
+        if (myGameArea.keys && myGameArea.keys[40]) {kutu.speedY = 3; }
+        baslangic.update();
+        duvar1.update();
+        duvar1.update();
+        duvar2.update();
+        duvar3.update();
+        duvar4.update();
+        duvar5.update();
+        duvar6.update();
+        duvar7.update();
+        duvar8.update();
+        duvar9.update();
+        duvar10.update();
+        duvar11.update();
+        duvar12.update();
+        duvar13.update();
+        duvar14.update();
+        duvar15.update();
+        duvar16.update();
+        duvar17.update();
+        duvar18.update();
+        duvar19.update();
+        duvar20.update();
+        bitis.update();
+        bitiscizgisi.update();
+        if(wincheck){
+            bitiscizgisi2.update();
+        }
+        
+        kutu.newPos();    
+        kutu.update();
+        if(kutu.crashWith(bitiscizgisi2)){
+            myGameArea.stop();
+            myGameArea.win();
+        }
+        }
+    
+        
+    }
+   
+    function clearmove(){
+        kutu.speedX=0;
+        kutu.speedY=0;
+    }
+    
+    function harita1(){
+        check=true;
+        baslangic=new component(80,45,"green",0,736);
+        duvar1 = new component(737,46,"blue",0,690);
+        duvar2 = new component(47 ,135,"blue",690,555);
+        duvar3 = new component(30,585,"blue",300,0);
+        duvar4 = new component(360,30,"blue",330,555);
+        duvar5 = new component(792,30,"blue",0,780);
+        duvar6 = new component(30,420,"blue",792,435);    
+        duvar7 = new component(396,75,"blue",420,435);
+        duvar8 = new component(38,435,"blue",382,75);
+        duvar9 = new component(741,30,"blue",330,0);
+        duvar10 = new component(630,30,"blue",390,75);
+        duvar11 = new component(30,240,"blue",990,75);
+        duvar12 = new component(30,150,"blue",990,75);
+        duvar13 = new component(30,270,"blue",1065,0);
+        duvar14 = new component(105,30,"blue",990,315);
+        duvar15 = new component(30,90,"blue",1080,315); 
+        duvar16 = new component(360,30,"blue",1080,405);
+        duvar17 = new component(105,30,"blue",1080,240);
+        duvar18 = new component(30,120,"blue",1155,240);
+        duvar19 = new component(287,30,"blue",1155,330);
+        duvar20=new component(30,44,"blue",0,736);
+        kutu = new component(39, 39,"red",35,738);
+        bitiscizgisi2=new component(1,36,"black",1150,54);
+        bitis=new component(50,45,"black",1390,359);
+        bitiscizgisi=new component(1,45,"black",1425,359);
+        efekt = new sound("efekt.mp3");
+        myGameArea.start();
+        
+    }
+    
+    function sound(src) {
+        this.sound = document.createElement("audio");
+        this.sound.src = src;
+        this.sound.setAttribute("preload", "auto");
+        this.sound.setAttribute("controls", "none");
+        this.sound.style.display = "none";
+        document.body.appendChild(this.sound);
+        this.play = function(){
+            this.sound.play();
+        }
+        this.stop = function(){
+            this.sound.pause();
+        }}   
+    
+    function harita2(){
+        wincheck=true;
+        check=false;
+        duvar1.width=1191;
+        duvar1.height=24;
+        duvar1.x=0;
+        duvar1.y=30;
+    
+        duvar2.width=450;
+        duvar2.height=24;
+        duvar2.x=0;
+        duvar2.y=90;
+        
+    
+        duvar3.width=37;
+        duvar3.height=570;
+        duvar3.x=450;
+        duvar3.y=90;
+    
+    
+        duvar4.width=321;
+        duvar4.height=24;
+        duvar4.x=451    ;
+        duvar4.y=651;
+    
+        duvar5.width=35;
+        duvar5.height=561;
+        duvar5.x=531;
+        duvar5.y=45;
+    
+        duvar6.width=31;
+        duvar6.height=560;
+        duvar6.x=609;
+        duvar6.y=95;
+    
+        duvar7.width=24;
+        duvar7.height=549;
+        duvar7.x=681;
+        duvar7.y=54;
+    
+        duvar8.width=31;
+        duvar8.height=558;
+        duvar8.x=741;
+        duvar8.y=99;
+    
+        duvar9.width=24;
+        duvar9.height=445;
+        duvar9.x=810;
+        duvar9.y=54;
+    
+        duvar10.width=138;
+        duvar10.height=24;
+        duvar10.x=756;
+        duvar10.y=540;
+        
+        duvar11.width=24;
+        duvar11.height=450;
+        duvar11.x=870;
+        duvar11.y=95;
+    
+        duvar12.width=135;
+        duvar12.height=24;
+        duvar12.x=870;
+        duvar12.y=450;
+    
+        duvar13.width=24;
+        duvar13.height=360;
+        duvar13.x=930;
+        duvar13.y=54;
+    
+        duvar14.width=24;
+        duvar14.height=384;
+        duvar14.x=990;
+        duvar14.y=90;
+    
+        duvar15.width=120;
+        duvar15.height=24;
+        duvar15.x=1014;
+        duvar15.y=210;
+    
+        duvar16.width=24;
+        duvar16.height=119;
+        duvar16.x=1050;
+        duvar16.y=54;
+    
+        duvar17.width=24;
+        duvar17.height=120;
+        duvar17.x=1110;
+        duvar17.y=90;
+    
+        duvar18.width=76;
+        duvar18.height=24;
+        duvar18.x=1115;
+        duvar18.y=90;
+    
+        duvar19.width=24;
+        duvar19.height=45;
+        duvar19.x=1167;
+        duvar19.y=54;
+        
+        kutu.width=33;
+        kutu.height=33;
+        kutu.x=31;//1075
+        kutu.y=55;//55
+        
+        duvar20.x=0;
+        duvar20.y=47;
+    
+        bitis.width=47;
+        bitis.height=36;
+        bitis.x=1120;
+        bitis.y=54;
+        
+        baslangic.x=30;
+        baslangic.y=45;
+        baslangic.width=40;
+        bitiscizgisi2=new component(1,36,"black",1150,54);
+        
+    }
+    function jumpscare(){
+       
+    }
+    
+    
+    </script>
+</html>
